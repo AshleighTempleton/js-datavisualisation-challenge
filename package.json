@@ -1,0 +1,24 @@
+{
+  "name": "js-datavisualisation-challenge",
+  "version": "1.0.0",
+  "description": "Javascript consolidation project BeCode",
+  "main": "temp.js",
+  "dependencies": {
+    "chart.js": "^2.9.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshleighTempleton/js-datavisualisation-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AshleighTempleton/js-datavisualisation-challenge/issues"
+  },
+  "homepage": "https://github.com/AshleighTempleton/js-datavisualisation-challenge#readme"
+}
