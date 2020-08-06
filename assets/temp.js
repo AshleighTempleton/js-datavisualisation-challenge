@@ -202,8 +202,8 @@ let removedValues = graph1Values.splice(0, 2);
 
 console.log(graph1Values);
 
-let values = [];
-let uniqueValue = [];
+// let values = [];
+// let uniqueValue = [];
 
 // Get countries from graph1values
 let countries = [];
@@ -301,11 +301,142 @@ for (i = 1; i < graph1Values.length; i++) {
 // Generate graph1 from chart.js
 var context = document.getElementById("graph1").getContext("2d");
 
-var myChart = new Chart(context, {
+var crime = new Chart(context, {
   type: "line",
   data: {
     labels: graph1years,
     datasets: dataset,
+  },
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  },
+});
+
+// -------------- GRAPH 2 -----------------
+
+// Set up canvas
+let table2 = document.getElementById("table2");
+
+let graph2 = document.createElement("canvas");
+graph2.setAttribute("id", "graph2");
+graph2.setAttribute("width", "600px");
+graph2.setAttribute("height", "400px");
+mwContent.insertBefore(graph2, table2);
+
+// Make array from table; homo = homocide
+function arrayFromHomo(table2) {
+  homoRows = document.getElementById("table2").rows;
+  homoArray = [];
+  // Loop for rows
+  for (i = 0; i < homoRows.length; i++) {
+    tempVar = homoRows[i].children;
+    tempArr = [];
+    // loop for columns iterating for each row
+    for (j = 0; j < tempVar.length; j++) {
+      tempArr.push(tempVar[j].innerText);
+    }
+    homoArray.push(tempArr);
+  }
+  return homoArray;
+}
+
+arrayFromHomo();
+console.log(homoArray);
+
+// Get years
+let graph2rows = homoArray.slice();
+let graph2years = graph2rows[0];
+let removedElements = graph2years.splice(0, 2);
+console.log(graph2years);
+
+// Get values from homoArray and remove first row of data
+let graph2Values = homoArray.slice();
+let removedValues2 = graph2Values.splice(0, 1);
+console.log(graph2Values);
+
+// Get countries from graph2values
+let homoCountries = [];
+for (i = 0; i < graph2Values.length; i++) {
+  homoCountries.push(graph2Values[i].splice(1, 1));
+}
+console.log(homoCountries);
+
+// Iterating through each value and converting from string to integer
+let b = 0;
+while (b < graph2Values.length) {
+  let removeDiv = graph2Values[b].shift(); //removing first div element (1-37)
+  for (i = 0; i < 2; i++) {
+    graph2Values[b][i] = parseInt(graph2Values[b][i]);
+  }
+  b++;
+}
+console.log(graph2Values);
+
+// Dividing the first set by years 2007-2009
+let firstSet = [];
+for (i = 0; i < 30; i++) {
+  firstSet.push(graph2Values[i].splice(0, 1));
+}
+console.log(firstSet);
+
+// Converting firstSet from 2d to 1d array
+let firstSetArr = [];
+for (i = 0; i < firstSet.length; i++) {
+  firstSetArr = firstSetArr.concat(firstSet[i]);
+}
+console.log(firstSetArr);
+
+// Set objects for 2007-2009 per country to display in graph2
+let data2007 = [];
+for (i = 0; i < firstSet.length; i++) {
+  data2007 = {
+    label: graph2years[0],
+    data: firstSetArr,
+    backgroundColor: "rgba(0, 99, 132, 0.6)",
+    borderColor: "rgba(0, 99, 132, 1)",
+    // yAxisID: "y-2007",
+  };
+}
+
+// Dividing the second set by years 2010-2012
+let secondSet = [];
+for (i = 0; i < graph2Values.length; i++) {
+  secondSet.push(graph2Values[i].splice(0, 1));
+}
+
+// Converting firstSet from 2d to 1d array
+let secondSetArr = [];
+for (i = 0; i < secondSet.length; i++) {
+  secondSetArr = secondSetArr.concat(secondSet[i]);
+}
+console.log(secondSetArr);
+
+// Set objects for 2010-2012 per country to display in graph2
+let data2010;
+data2010 = {
+  label: graph2years[1],
+  data: secondSetArr,
+  backgroundColor: "rgba(99, 132, 0, 0.6)",
+  borderColor: "rgba(99, 132, 0, 1)",
+};
+console.log(data2010);
+
+// Visualise graph2
+let context2 = document.getElementById("graph2").getContext("2d");
+
+let homocide = new Chart(context2, {
+  type: "bar",
+  data: {
+    labels: homoCountries,
+    datasets: [data2007, data2010],
   },
   options: {
     scales: {
