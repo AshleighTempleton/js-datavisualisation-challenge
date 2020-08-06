@@ -1,3 +1,6 @@
+The live demo: https://ashleightempleton.github.io/js-datavisualisation-challenge/
+
+
 # js-datavisualisation-challenge
 Javascript consolidation project BeCode
 
