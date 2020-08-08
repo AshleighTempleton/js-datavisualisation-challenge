@@ -1,4 +1,4 @@
-The live demo: https://ashleightempleton.github.io/js-datavisualisation-challenge/
+
 
 
 # js-datavisualisation-challenge
@@ -8,7 +8,7 @@ Javascript consolidation project BeCode
 
 #### 1. handling of the DOM:
 
-- [ ] I was able to find the right selector to do it.
+- [.] I was able to find the right selector to do it.
 - [ ] I was able to inject the graph in the right place on the page via javascript.
 - [ ] I was able to retrieve the html data in a format adapted to my javascript code.
 
