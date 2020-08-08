@@ -1,166 +1,91 @@
-// // THIS IS A TEMP JS UNTIL THE PROPER JS FILE IN WHICH TO ADD THE CODE CAN BE DETERMINED
+let content = document.getElementById("content");
+let bodyContent = document.getElementById("bodyContent");
 
-// let content = document.getElementById("mw-content-text");
+let graph0 = document.createElement("canvas");
+graph0.setAttribute("id", "graph0");
+graph0.setAttribute("width", "600px");
+graph0.setAttribute("height", "400px");
+content.insertBefore(graph0, bodyContent);
 
-// //TABLE 1
+let firstData = [];
+let secondData = [];
+let liveData1 = [];
+let liveData2 = [];
 
-// let table1 = document.getElementById("table1");
+// Generate graph0 from chart.js
+let contextLive = document.getElementById("graph0").getContext("2d");
+let tags = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
-// //Get JSON values for countries
-// let json = [];
-// var headers = [];
-// for (let i = 0; i < table1.rows[0].cells.length; i++) {
-//   headers[i] = table1.rows[0].cells[i].innerHTML
-//     .toLowerCase()
-//     .replace(/ /gi, "");
-// }
+var liveGraph = new Chart(contextLive, {
+  type: "bar",
+  data: {
+    labels: tags,
+    datasets: [
+      {
+        label: "Crime data 1",
+        backgroundColor: "rgba(0, 99, 132, 0.6)",
+        borderColor: "rgba(0, 99, 132, 1)",
+        data: [liveData1],
+      },
+      {
+        label: "Crime data 2",
+        backgroundColor: "rgba(99, 132, 0, 0.6)",
+        borderColor: "rgba(99, 132, 0, 1)",
+        data: [liveData2],
+      },
+    ],
+  },
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  },
+});
 
-// for (let i = 1; i < table1.rows.length; i++) {
-//   var table1Row = table1.rows[i];
-//   var table1RowData = {};
-//   for (var j = 0; j < table1Row.cells.length; j++) {
-//     table1RowData[headers[j]] = table1Row.cells[j].innerHTML;
-//   }
-//   json.push(table1RowData);
-// }
-// //console.log(json);
+function updateGraph() {
+  let request = new XMLHttpRequest();
 
-// //Get country names
-// let countries = json.map(function (e) {
-//   return e.country;
-// });
-// //console.log(countries);
+  request.open("GET", "https://canvasjs.com/services/data/datapoints.php");
+  request.onload = function () {
+    newData = JSON.parse(request.responseText);
+    console.log(newData);
+    console.log(request.responseText);
 
-// // create an array to get the yeard
-// let yearsTag = document.getElementsByTagName("th");
-// let years = [];
-// for (let i = 5; i < 16; i++) {
-//   years.push(yearsTag[i].innerHTML);
-// }
-// //console.log(years);
+    firstData.splice(0, firstData.length);
+    for (i = 0; i < newData.length; i++) {
+      firstData.push(newData[i].splice(0, 1));
+    }
 
-// // create arrays to get the data per country
+    liveData1 = firstData.flat();
+    console.log(liveData1);
+    liveGraph.data.datasets[0].data = liveData1;
 
-// // let BelgiumTag = document.getElementsByTagName("TD");
-// // let Belgium = [];
-// // let temp = [];
-// // let result;
-// // for (let i = 1; i < 12; i++) {
-// //   temp.push(BelgiumTag[i].innerText.replace(",", "."));
-// // }
-// // console.log(temp);
+    secondData.splice(0, secondData.length);
+    for (i = 0; i < newData.length; i++) {
+      secondData.push(newData[i].splice(0, 1));
+    }
+    console.log(secondData);
 
-// // for (let j = 0; j < temp.length; j++) {
-// //   result = parseInt(temp[j]);
-// //   Belgium.push(result);
-// // }
-// // console.log(Belgium);
+    liveData2 = secondData.flat();
+    console.log(liveData2);
+    liveGraph.data.datasets[1].data = liveData2;
+    liveGraph.update();
+  };
+  request.send();
+}
 
-// let countryTag = document.getElementsByTagName("TD");
-// let temp = [];
-// let result;
-// let Belgium = [];
-// let Bulgaria = [];
-// let Czech = [];
+setTimeout(updateGraph, 0001);
+setInterval(updateGraph, 1000);
 
-// let i = 1;
-
-// function getData() {
-//   temp.push(countryTag[i].innerText.replace(",", "."));
-//   for (let j = 0; j < temp.length; j++) {
-//     result = parseInt(temp[j]);
-//   }
-//   //console.log(temp);
-// }
-
-// function countryData() {
-//   while (i < 12) {
-//     getData();
-//     Belgium.push(result);
-//     i++;
-//   }
-//   i++;
-//   while (i > 12 && i < 24) {
-//     getData();
-//     Bulgaria.push(result);
-//     i++;
-//   }
-//   while (i > 24 && i < 36) {
-//     getData();
-//     Czech.push(result);
-//     i++;
-//   }
-// }
-// countryData();
-// console.log(Belgium);
-// console.log(Bulgaria);
-// console.log(temp[24]);
-
-// let table2 = document.getElementById("table2");
-
-// function buildGraph(countries) {
-//   let div1 = document.createElement("div");
-//   let graph1 = document.createElement("canvas");
-//   graph1.setAttribute("id", "graph1");
-//   //   graph1.setAttribute("width", "400px");
-//   //   graph1.setAttribute("height", "400px");
-//   console.log(graph1);
-
-//   div1.appendChild(graph1);
-//   content.insertBefore(div1, table1);
-
-//   var myLineChart = new Chart(graph1, {
-//     type: "line",
-//     data: {
-//       labels: years,
-//       datasets: [
-//         {
-//           data: Belgium,
-//           label: countries[1],
-//           borderColor: "#3e95cd",
-//           fill: false,
-//         },
-//         {
-//           data: Bulgaria,
-//           label: countries[2],
-//           borderColor: "#8e5ea2",
-//           fill: false,
-//         },
-//         {
-//           data: Czech,
-//           label: countries[3],
-//           borderColor: "#3cba9f",
-//           fill: false,
-//         },
-//         // {
-//         //   data: [40, 20, 10, 16, 24, 38, 74, 167, 508, 784],
-//         //   label: countries[4],
-//         //   borderColor: "#e8c3b9",
-//         //   fill: false,
-//         // },
-//         // {
-//         //   data: [6, 3, 2, 2, 7, 26, 82, 172, 312, 433],
-//         //   label: countries[5],
-//         //   borderColor: "#c45850",
-//         //   fill: false,
-//         // },
-//       ],
-//     },
-//     options: {
-//       title: {
-//         display: true,
-//         text: "European Crime statistics",
-//       },
-//     },
-//   });
-//   //return myLineChart;
-//   //graph1.appendChild(myLineChart);
-// }
-
-// buildGraph(countries);
+// ---------------- GRAPH 1 ------------------
 
 let mwContent = document.getElementById("mw-content-text");
-let content = document.getElementById("content");
 let table1 = document.getElementById("table1");
 
 // Create the first graph and insert it into HTML
